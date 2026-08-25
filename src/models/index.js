@@ -15,6 +15,7 @@ const Textura = require('./Textura');
 const Material = require('./Material');
 const Inventario = require('./Inventario');
 const MaquinaCorte = require('./MaquinaCorte');
+const MovimientoInventario = require('./MovimientoInventario');
 
 // Un rol puede tener muchos usuarios (SEGURIDAD)
 Role.hasMany(User, {
@@ -124,7 +125,99 @@ Inventario.belongsTo(
         as: 'nivel',
     }
 );
-        
+
+// Un material puede tener muchos movimientos de inventario (GESTION DE MOVIMIENTOS DE INVENTARIO)
+Material.hasMany(
+    MovimientoInventario,
+    {
+        foreignKey: 'material_id',
+        as: 'movimientos',
+    }
+);
+
+// Un movimiento de inventario pertenece a un material
+MovimientoInventario.belongsTo(
+    Material,
+    {
+        foreignKey: 'material_id',
+        as: 'material',
+    }
+);
+
+/** <<<<< (CON NIVEL ORIGEN Y DESTINO) >>>>> */
+// Un nivel puede tener muchos movimientos de inventario como origen (GESTION DE MOVIMIENTOS DE INVENTARIO)
+Nivel.hasMany(
+    MovimientoInventario,
+    {
+        foreignKey: 'nivel_origen_id',
+        as: 'movimientosOrigen',
+    }
+);
+
+// Un nivel puede tener muchos movimientos de inventario como destino (GESTION DE MOVIMIENTOS DE INVENTARIO)
+Nivel.hasMany(
+    MovimientoInventario,
+    {
+        foreignKey: 'nivel_destino_id',
+        as: 'movimientosDestino',
+    }
+);
+
+// Un movimiento de inventario pertenece a un nivel como origen
+MovimientoInventario.belongsTo(
+    Nivel,
+    {
+        foreignKey: 'nivel_origen_id',
+        as: 'nivelOrigen',
+    }
+);
+
+// Un movimiento de inventario pertenece a un nivel como destino
+MovimientoInventario.belongsTo(
+    Nivel,
+    {
+        foreignKey: 'nivel_destino_id',
+        as: 'nivelDestino',
+    }
+);
+
+/** <<<<< (CON MAQUINA DE CORTE) >>>>> */
+// Una máquina de corte puede tener muchos movimientos de inventario (GESTION DE MOVIMIENTOS DE INVENTARIO)
+MaquinaCorte.hasMany(
+    MovimientoInventario,
+    {
+        foreignKey: 'maquina_corte_id',
+        as: 'movimientosInventario',
+    }
+);
+
+// Un movimiento de inventario pertenece a una máquina de corte
+MovimientoInventario.belongsTo(
+    MaquinaCorte,
+    {
+        foreignKey: 'maquina_corte_id',
+        as: 'maquinaCorte',
+    }
+);
+
+/*// Una máquina de corte puede tener muchos movimientos de inventario (GESTION DE MOVIMIENTOS DE INVENTARIO)
+MaquinaCorte.hasMany(
+    MovimientoInventario,
+    {
+        foreignKey: 'maquina_corte_id',
+        as: 'movimientos',
+    }
+);
+
+// Un movimiento de inventario pertenece a una máquina de corte
+MovimientoInventario.belongsTo(
+    MaquinaCorte,
+    {
+        foreignKey: 'maquina_corte_id',
+        as: 'maquinaCorte',
+    }
+);*/
+
 const db = {
     Role,
     User,
@@ -136,7 +229,8 @@ const db = {
     Textura,
     Material,
     Inventario,
-    MaquinaCorte
+    MaquinaCorte,
+    MovimientoInventario,
 };
 
 module.exports = db;
