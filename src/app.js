@@ -18,6 +18,7 @@ const texturaRoutes = require('./routes/textura.routes');
 const materialRoutes = require('./routes/material.routes');
 const maquinaCorteRoutes = require('./routes/maquinaCorte.routes');
 const movimientoInventarioRoutes = require('./routes/movimientoInventario.routes');
+const inventarioRoutes = require('./routes/inventario.routes');
 
 const app = express();
 
@@ -39,6 +40,7 @@ app.use('/api/texturas', texturaRoutes);
 app.use('/api/materiales', materialRoutes);
 app.use('/api/maquinas-corte', maquinaCorteRoutes);
 app.use('/api/movimientos-inventario', movimientoInventarioRoutes);
+app.use('/api/inventarios', inventarioRoutes);
 
 app.get('/api/health', (req, res) => {
     res.status(200).json({

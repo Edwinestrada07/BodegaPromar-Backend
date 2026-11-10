@@ -3,109 +3,124 @@
     "inventarios", facilitando la gestión de los inventarios disponibles en el sistema.
 **/
 
-const {Inventario, Material, TipoMaterial, Color, Textura, Nivel, Estante, Zona} = require('../models');
+const {Inventario, Material, Nivel, TipoMaterial, Color, Textura, Estante, Zona} = require('../models');
 
-/* Incluye las relaciones con los catálogos de tipo de material, color y textura, ademas de las relaciones con los 
-    niveles, estantes y zonas para obtener información adicional sobre los materiales. **/
-const includeCompleto = [
+const includeRelaciones = [
     {
         model: Material,
         as: 'material',
-
         include: [
             {
                 model: TipoMaterial,
-                as: 'tipoMaterial',
+                as: 'tipoMaterial'
             },
             {
                 model: Color,
-                as: 'color',
+                as: 'color'
             },
             {
                 model: Textura,
-                as: 'textura',
-            },
-        ],
+                as: 'textura'
+            }
+        ]
     },
-
     {
         model: Nivel,
         as: 'nivel',
-
         include: [
             {
                 model: Estante,
                 as: 'estante',
-
                 include: [
                     {
                         model: Zona,
-                        as: 'zona',
-                    },
-                ],
-            },
-        ],
-    },
+                        as: 'zona'
+                    }
+                ]
+            }
+        ]
+    }
 ];
 
-/** Obtiene todos los inventarios de la base de datos, incluyendo sus relaciones con los catálogos
-    de tipo de material, color y textura, ademas de las relaciones con los niveles, estantes y zonas. **/
-const findAll = async () => {
+const obtenerTodos = async () => {
     return await Inventario.findAll({
-        include: includeCompleto,
+        include: includeRelaciones,
         order: [
-            ['created_at', 'DESC'],
-        ],
+            ['created_at', 'DESC']
+        ]
     });
-
 };
 
-/** Obtiene un inventario por su ID de la base de datos **/
-const findById = async (id) => {
-    return await Inventario.findByPk(
-        id,
-        {
-            include: includeCompleto,
-        }
-    );
+const obtenerPorMaterialYNivel = async (
+    material_id,
+    nivel_id,
+    transaction
+) => {
 
-};
-
-/** Obtiene un inventario por su ID de material y ID de nivel de la base de datos **/
-const findByMaterialAndNivel = async (material_id, nivel_id) => {
     return await Inventario.findOne({
         where: {
             material_id,
-            nivel_id,
+            nivel_id
         },
+        transaction,
+        lock: transaction.LOCK.UPDATE
     });
 
 };
 
-/** Crea un nuevo inventario en la base de datos **/
-const create = async (data) => {
-    return await Inventario.create(data);
+const obtenerPorId = async (id, transaction) => {
+
+    return await Inventario.findByPk(id, {
+        include: includeRelaciones,
+        transaction
+    });
 
 };
 
-/** Actualiza un inventario existente en la base de datos **/
-const update = async (id, data) => {
+const crear = async (data, transaction) => {
 
-    const inventario = await Inventario.findByPk(id);
+    return await Inventario.create(data, {
+        transaction
+    });
 
-    if (!inventario) {
-        return null;
-    }
+};
 
-    await inventario.update(data);
+const actualizar = async (
+    inventario,
+    data,
+    transaction
+) => {
+
+    await inventario.update(data, {
+        transaction
+    });
+
     return inventario;
 
 };
 
+const obtenerMaterial = async (id, transaction) => {
+
+    return await Material.findByPk(id, {
+        transaction
+    });
+
+};
+
+const obtenerNivel = async (id, transaction) => {
+
+    return await Nivel.findByPk(id, {
+        transaction
+    });
+
+};
+
 module.exports = {
-    findAll,
-    findById,
-    findByMaterialAndNivel,
-    create,
-    update,
+    obtenerTodos,
+    obtenerPorMaterialYNivel,
+    obtenerPorId,
+    crear,
+    actualizar,
+    obtenerMaterial,
+    obtenerNivel
 };

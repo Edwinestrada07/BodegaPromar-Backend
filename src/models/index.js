@@ -91,42 +91,34 @@ Material.belongsTo(TipoMaterial, {
 
 
 // Un material puede tener muchos inventarios (GESTION DE INVENTARIOS)
-Material.hasMany(
-    Inventario,
-    {
+Material.hasMany(Inventario, {
         foreignKey: 'material_id',
         as: 'inventarios',
     }
 );
 
 // Un inventario pertenece a un material
-Inventario.belongsTo(
-    Material,
-    {
+Inventario.belongsTo(Material, {
         foreignKey: 'material_id',
         as: 'material',
     }
 );
 
 // Un nivel puede tener muchos inventarios (GESTION DE INVENTARIOS)
-Nivel.hasMany(
-    Inventario,
-    {
+Nivel.hasMany(Inventario, {
         foreignKey: 'nivel_id',
         as: 'inventarios',
     }
 );
 
 // Un inventario pertenece a un nivel
-Inventario.belongsTo(
-    Nivel,
-    {
+Inventario.belongsTo(Nivel, {
         foreignKey: 'nivel_id',
         as: 'nivel',
     }
 );
 
-// Un material puede tener muchos movimientos de inventario (GESTION DE MOVIMIENTOS DE INVENTARIO)
+//**<<<<< Un material puede tener muchos movimientos de inventario (GESTION DE MOVIMIENTOS DE INVENTARIO) >>>>*/
 Material.hasMany(
     MovimientoInventario,
     {
