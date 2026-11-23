@@ -4,8 +4,9 @@ const express = require('express');
 const router = express.Router();
 
 const controller = require('../controllers/movimientoInventario.controller');
+const { authenticateToken } = require('../middlewares/auth.middleware');
 
-router.get('/', controller.obtenerTodos);
-router.get('/:id', controller.obtenerPorId);
+router.get('/', authenticateToken, controller.obtenerTodos);
+router.get('/:id', authenticateToken, controller.obtenerPorId);
 
 module.exports = router;

@@ -4,11 +4,12 @@ const express = require('express');
 const router = express.Router();
 
 const zonaController = require('../controllers/zona.controller');
+const { authenticateToken } = require('../middlewares/auth.middleware');
 
-router.get('/', zonaController.obtenerTodas);
-router.get('/:id', zonaController.obtenerPorId);
-router.get('/:id/estructura', zonaController.obtenerEstructura);
-router.post('/', zonaController.crear);
-router.put('/:id', zonaController.actualizar);
+router.get('/', authenticateToken, zonaController.obtenerTodas);
+router.get('/:id', authenticateToken, zonaController.obtenerPorId);
+router.get('/:id/estructura', authenticateToken, zonaController.obtenerEstructura);
+router.post('/', authenticateToken, zonaController.crear);
+router.put('/:id', authenticateToken, zonaController.actualizar);
 
 module.exports = router;
