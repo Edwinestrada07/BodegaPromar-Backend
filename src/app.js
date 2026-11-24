@@ -20,6 +20,7 @@ const maquinaCorteRoutes = require('./routes/maquinaCorte.routes');
 const movimientoInventarioRoutes = require('./routes/movimientoInventario.routes');
 const inventarioRoutes = require('./routes/inventario.routes');
 const ajusteInventarioRoutes = require('./routes/ajusteInventario.routes');
+const reservaRoutes = require('./routes/reserva.routes');
 
 const app = express();
 
@@ -43,6 +44,7 @@ app.use('/api/maquinas-corte', maquinaCorteRoutes);
 app.use('/api/movimientos-inventario', movimientoInventarioRoutes);
 app.use('/api/inventarios', inventarioRoutes);
 app.use('/api/ajustes-inventario', ajusteInventarioRoutes);
+app.use('/api/reservas', reservaRoutes);
 
 app.get('/api/health', (req, res) => {
     res.status(200).json({

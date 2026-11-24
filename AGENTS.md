@@ -142,6 +142,11 @@ cantidad_disponible = cantidad - cantidad_reservada;
 El inventario físico total incluye las unidades reservadas. Para reportes,
 distingue claramente entre cantidad física, reservada y disponible.
 
+Cada reserva nueva debe conservar su propio registro asociado al inventario
+de material y nivel. Debe ser posible liberar una parte o todo el saldo
+pendiente, cancelar el saldo pendiente o consumirlo. La cancelación libera
+las unidades pendientes; no descuenta existencias físicas.
+
 ### 4.4 Máquinas de corte
 
 Existen cuatro máquinas identificadas exactamente como:
@@ -154,6 +159,10 @@ Existen cuatro máquinas identificadas exactamente como:
 Una salida hacia corte debe identificar la máquina receptora y registrar
 el material, cantidad, ubicación de origen, usuario y observación cuando
 corresponda.
+
+El consumo de unidades reservadas que se envían a una máquina SECC reduce
+la cantidad física y reservada en una sola transacción y registra un
+movimiento `SALIDA_SECC`.
 
 No trates una máquina como si fuera un nivel de bodega. El modelo
 `Inventario` requiere un `nivel_id`; no crees inventarios ficticios para

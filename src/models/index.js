@@ -16,6 +16,7 @@ const Material = require('./Material');
 const Inventario = require('./Inventario');
 const MaquinaCorte = require('./MaquinaCorte');
 const MovimientoInventario = require('./MovimientoInventario');
+const Reserva = require('./Reserva');
 
 // Un rol puede tener muchos usuarios (SEGURIDAD)
 Role.hasMany(User, {
@@ -117,6 +118,26 @@ Inventario.belongsTo(Nivel, {
         as: 'nivel',
     }
 );
+
+Inventario.hasMany(Reserva, {
+    foreignKey: 'inventario_id',
+    as: 'reservas',
+});
+
+Reserva.belongsTo(Inventario, {
+    foreignKey: 'inventario_id',
+    as: 'inventario',
+});
+
+User.hasMany(Reserva, {
+    foreignKey: 'usuario_id',
+    as: 'reservas',
+});
+
+Reserva.belongsTo(User, {
+    foreignKey: 'usuario_id',
+    as: 'usuario',
+});
 
 //**<<<<< Un material puede tener muchos movimientos de inventario (GESTION DE MOVIMIENTOS DE INVENTARIO) >>>>*/
 Material.hasMany(
@@ -223,6 +244,7 @@ const db = {
     Inventario,
     MaquinaCorte,
     MovimientoInventario,
+    Reserva,
 };
 
 module.exports = db;
