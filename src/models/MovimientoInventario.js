@@ -58,6 +58,11 @@ const MovimientoInventario = sequelize.define(
                 allowNull: true,
             },
 
+            movimiento_salida_id: {
+                type: DataTypes.UUID,
+                allowNull: true,
+            },
+
             usuario_id: {
                 type: DataTypes.UUID,
                 allowNull: true,

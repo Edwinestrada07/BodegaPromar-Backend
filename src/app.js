@@ -21,6 +21,8 @@ const movimientoInventarioRoutes = require('./routes/movimientoInventario.routes
 const inventarioRoutes = require('./routes/inventario.routes');
 const ajusteInventarioRoutes = require('./routes/ajusteInventario.routes');
 const reservaRoutes = require('./routes/reserva.routes');
+const salidaCorteRoutes = require('./routes/salidaCorte.routes');
+const retalRoutes = require('./routes/retal.routes');
 
 const app = express();
 
@@ -45,6 +47,8 @@ app.use('/api/movimientos-inventario', movimientoInventarioRoutes);
 app.use('/api/inventarios', inventarioRoutes);
 app.use('/api/ajustes-inventario', ajusteInventarioRoutes);
 app.use('/api/reservas', reservaRoutes);
+app.use('/api/salidas-corte', salidaCorteRoutes);
+app.use('/api/retales', retalRoutes);
 
 app.get('/api/health', (req, res) => {
     res.status(200).json({

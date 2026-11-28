@@ -238,10 +238,23 @@ Al implementar estas operaciones, respeta el flujo real:
 2. La salida reduce las existencias de la ubicación de origen.
 3. Después del corte, las planchas completas que regresen se reincorporan
    al inventario.
-4. Los retales reutilizables se registran como materiales sobrantes, con
-   sus propias dimensiones y ubicación.
+4. Los retales se registran en la entidad independiente `Retal`, con sus
+   dimensiones y ubicación propias, y referencia a la salida que los
+   produjo. Su cantidad cuenta piezas de retal, no planchas del inventario.
 5. El material dañado debe poder identificarse sin confundirlo con un
    sobrante reutilizable.
+
+El módulo inicial de salida/retorno registra salidas de unidades
+disponibles y retornos de planchas completas, enlazando cada retorno a su
+movimiento `SALIDA_SECC`.
+
+Los retales se registran en una entidad independiente enlazada al
+movimiento de salida y al nivel donde se almacenan. `cantidad` cuenta
+piezas de retal de las mismas dimensiones, no planchas: no se suma al
+inventario de planchas ni se registra como una cantidad de movimiento de
+planchas. Distingue los estados `REUTILIZABLE` y `DAÑADO`.
+
+El registro de planchas completas dañadas requiere definir un flujo aparte.
 
 No implementes retornos que no puedan asociarse de forma coherente con la
 salida correspondiente cuando esa trazabilidad sea necesaria. Antes de
